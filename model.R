@@ -133,4 +133,4 @@ dane_model <- merge(dane_model, education, by = "Country.Code")
 
 lm(Q106 ~ GDP+gini_index+govt_expenses+foreign_investments+Total.democracy.score
    +density+unemployment_rate+immigrants_percent+internet_access+education_expenses
-   , data = dane_model2)
+   , data = dane_model)
