@@ -28,22 +28,19 @@ dane_model <- dane2 %>%
 view(dane_model)
 
 #Wczytanie danych z World Bank
-dane_wb <- read.csv("Data_WB2.csv",
+dane_wb <- read.csv("Data_WB4.csv",
                 header=T,
                 sep=",",
                 dec=".")
-dane_wb <- select(dane_wb, -c(Series.Name, Series.Code))
-dane_wb_long <- dane_wb %>%
-  pivot_longer(
-    cols = starts_with("X20"),       # selects columns 2017–2022
-    names_to = "YEAR",
-    values_to = "GDP"
-  ) %>%
-  mutate(
-    YEAR = stringr::str_extract(YEAR, "\\d{4}"),  # clean column names like "X2017..YR2017." -> "2017"
-    YEAR = as.numeric(YEAR)
-)
-dane_model <- merge(dane_model, dane_wb_long, by = c("Country.Code", "YEAR"))
+dane_wb <- select(dane_wb, -c(Time.Code, Country.Name))
+dane_wb <- rename(dane_wb, YEAR=Time)
+view(dane_wb)
+
+#Polaczenie danych
+dane_model2 <- merge(dane_model, dane_wb, by = c("Country.Code", "YEAR"))
+dane_model2 <- select(dane_model2, -c(International.migrant.stock....of.population...SM.POP.TOTL.ZS.))
+na.omit(dane_model2)
+view(dane_model2)
 
 #demokracja
 democracy <- read.csv("freedom_score.csv",
